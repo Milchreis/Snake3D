@@ -1,11 +1,14 @@
 class Snake {
-    constructor(x, y) {
+    constructor(x, y, size) {
         this.body = [];
-        this.size = 10;
+        this.size = size || 10;
         this.spacing = 3;
         this.xdir = 0;
         this.ydir = 1;
-        this.slowness = 30;
+        this.slowness = 20;
+
+        x = round(x / (this.size+this.spacing)) * (this.size+this.spacing);
+        y = round(y / (this.size+this.spacing)) * (this.size+this.spacing);
 
         this.body.push(createVector(x, y, 0));
     }
@@ -36,14 +39,22 @@ class Snake {
             head.x + (this.size * this.xdir) + (this.spacing * this.xdir), 
             head.y + (this.size * this.ydir) + (this.spacing * this.ydir),
             0));
+
+        this.slowness = constrain(ceil(this.slowness-0.4), 1, this.slowness);
     }
 
-    checkFood(food) {
-        let head = this.getHead()
-        if(head.x >= food.x && head.x <= food.x + food.size &&head.x >= food.x 
-            && head.x <= food.x + food.size) {
-            this.grow()
-            return true;
+    isEating(food) {
+        let dist = this.getDistance(this.getHead(), food.x, food.y, food.size);
+        return dist <= this.size/2;
+    }
+
+    isInBody(x, y, size) {
+        
+        for(let i=0; i<this.body.length-2; i++) {
+            let dist = this.getDistance(this.body[i], x, y, size);
+            if(dist <= this.size*0.5) {
+                return true;
+            }
         }
         return false;
     }
@@ -66,6 +77,10 @@ class Snake {
         return this.body[0];
     }
 
+    getDistance(element, x, y, size) {
+        return abs((element.x + this.size)/2 - (x+size)/2) + abs((element.y + this.size)/2 - (y+size)/2);
+    }
+
     update() {
         if((frameCount % this.slowness) == 0) {
             this.move();
@@ -75,12 +90,11 @@ class Snake {
     render() {
         noStroke();
         ambientLight(100);
-        pointLight(250, 250, 250, 100, 100, 0);
         ambientMaterial(100);
         
         this.body.forEach(item => {
             push()
-            translate(item.x, item.y, (this.size/2) + 1);
+            translate(item.x, item.y, this.size);
             box(this.size);
             pop()
         })
