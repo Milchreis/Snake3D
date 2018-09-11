@@ -4,9 +4,10 @@ class Snake {
         this.size = size || 10;
         this.spacing = 3;
         this.xdir = 0;
-        this.ydir = 1;
-        this.slowness = 20;
+        this.ydir = 0;
+        this.slowness = 18;
 
+        // Snap to grid
         x = round(x / (this.size+this.spacing)) * (this.size+this.spacing);
         y = round(y / (this.size+this.spacing)) * (this.size+this.spacing);
 
@@ -40,12 +41,12 @@ class Snake {
             head.y + (this.size * this.ydir) + (this.spacing * this.ydir),
             0));
 
-        this.slowness = constrain(ceil(this.slowness-0.4), 1, this.slowness);
+        this.slowness = constrain(this.slowness-0.5, 1, this.slowness);
     }
 
     isEating(food) {
         let dist = this.getDistance(this.getHead(), food.x, food.y, food.size);
-        return dist <= this.size/2;
+        return dist <= this.size*0.5;
     }
 
     isInBody(x, y, size) {
@@ -82,7 +83,7 @@ class Snake {
     }
 
     update() {
-        if((frameCount % this.slowness) == 0) {
+        if((frameCount % floor(this.slowness)) == 0) {
             this.move();
         }
     }
@@ -94,7 +95,7 @@ class Snake {
         
         this.body.forEach(item => {
             push()
-            translate(item.x, item.y, this.size);
+            translate(item.x, item.y, this.size/2);
             box(this.size);
             pop()
         })

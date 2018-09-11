@@ -15,7 +15,7 @@ class Food {
         ambientMaterial(this.color);
         
         push();
-        translate(this.x, this.y, this.size);
+        translate(this.x, this.y, this.size/2);
         box(this.size);
         pop();
     }

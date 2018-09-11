@@ -2,6 +2,8 @@ let snake;
 let food;
 let blockSize;
 let planeSize; 
+let isometric = false;
+let angle = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
@@ -23,13 +25,13 @@ function draw() {
   background(184, 184, 184);
   translate(-windowWidth/2, -windowHeight/2, 0);
   
-  let angle = map(mouseY, 0, height, 0, 1000);
+  let angle = map(mouseY, 0, height, 0, max(windowWidth, windowHeight)*0.7);
   camera(
     0, 
     angle,
     min(windowWidth, windowHeight)*0.8, 
     0, 0, 0, 0, 1, 0);
-
+  
   pointLight(250, 250, 250, 0, 1000, 0);
 
   // Draw Pane
@@ -55,7 +57,8 @@ function draw() {
 
 function keyPressed() {
   if(key === ' ') {
-    snake.grow();
+    // snake.grow();
+    isometric = !isometric; 
   }
 
   if(keyCode === LEFT_ARROW) {
