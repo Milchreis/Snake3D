@@ -7,3 +7,11 @@ Inspired by [The-Coding-Train Snake-Redux Video](https://www.youtube.com/watch?v
 Move the mouse up and down for changing the angle of view and use the arrow keys for moving the snake. Reach the red block to feed the snake that it grows.
 
 Play it here: https://milchreis.github.io/Snake3D/
+
+![Alt Screencast](https://github.com/Milchreis/Snake3D/raw/master/snake3d.gif)
+
+# Ideas for PR's
+* Isometric view
+* First-Person view
+* Skybox
+* Blinking snake while eating
