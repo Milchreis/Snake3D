@@ -4,6 +4,13 @@ let blockSize;
 let planeSize; 
 let isometric = false;
 let angle = 0;
+let font;
+let fontsize = 40;
+let isGameOver = false;
+
+function preload() {
+  font = loadFont('font/Lato-Black.ttf');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
@@ -14,11 +21,21 @@ function setup() {
     width: windowWidth,
     height: windowHeight
   };
+
+  restartGame();
+
+  setAttributes('antialias', true);
+
+  textFont(font);
+  textSize(fontsize);
+  textAlign(CENTER, CENTER);
+}
+
+function restartGame() {
+  isGameOver = false;
   
   snake = new Snake(windowWidth/2, windowHeight/2, blockSize);
   food = createFood();
-
-  setAttributes('antialias', true);
 }
 
 function draw() {
@@ -94,7 +111,21 @@ function checkGameOver() {
   if(head.x <= 0+blockSize || head.x >= planeSize.width - blockSize 
       || head.y <= 0+blockSize || head.y >= planeSize.height - blockSize/2
       || snake.isInBody(head.x, head.y, snake.size)) {
-    print("Game over");
-    noLoop();
+
+    isGameOver = true;
+    snake.stop();
+    
+    fill(10);
+    push();
+    translate(0, 0, 80)
+    text(`GameOver: Your points ${snake.length()}`, width/2, height/2);
+    text(`Click to restart game`, width/2, height/2 + 50);
+    pop();
+  }
+}
+
+function mousePressed() {
+  if(isGameOver) {
+    restartGame();
   }
 }

@@ -5,7 +5,8 @@ class Snake {
         this.spacing = 3;
         this.xdir = 0;
         this.ydir = 0;
-        this.slowness = 18;
+        this.slowness = 13;
+        this.allowMoving = true;
 
         // Snap to grid
         x = round(x / (this.size+this.spacing)) * (this.size+this.spacing);
@@ -32,6 +33,10 @@ class Snake {
     moveDown() {
         this.ydir = 1;
         this.xdir = 0;
+    }
+
+    length() {
+        return this.body.length;
     }
 
     grow() {
@@ -82,8 +87,12 @@ class Snake {
         return abs((element.x + this.size)/2 - (x+size)/2) + abs((element.y + this.size)/2 - (y+size)/2);
     }
 
+    stop() {
+        this.allowMoving = false;
+    }
+
     update() {
-        if((frameCount % floor(this.slowness)) == 0) {
+        if(this.allowMoving && (frameCount % floor(this.slowness)) == 0) {
             this.move();
         }
     }
